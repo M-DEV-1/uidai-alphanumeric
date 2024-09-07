@@ -54,7 +54,7 @@ input[type="email"] {
     margin-top: 10px;
 }
 
-button {
+#send-otp {
     width: 100%;
     padding: 10px;
     font-size: 16px;

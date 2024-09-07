@@ -5,8 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Retrieve Aadhaar Number</title>
     <link rel="stylesheet" href="styles.css">
-    <!-- <script src="https://www.google.com/recaptcha/api.js" async defer></script> -->
-    <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 </head>
 <body>
     <div class="disclaimer">
@@ -42,11 +40,13 @@
             <div class="form-group">
                 <label for="captcha">Enter Captcha</label>	               
                 <input type="text" id="captcha" name="captcha" required>	
-                <div id="captcha-image">	                
-	                    <canvas id="captcha-canvas"></canvas>
+                <div id="captcha-image">	
+                    <!-- Image element to display the CAPTCHA -->
+                    <img id="captcha-img" alt="CAPTCHA Image" />
                 </div>
+                <button type="button" id="reload-captcha" onclick="fetchCaptcha()">Reload</button>
             </div>
-            <button type="submit" id="send-otp" onclick="validateCaptcha()">SUBMIT</button>
+            <button type="submit" id="send-otp" onclick="validateCaptcha(event)">SUBMIT</button>
         </form>
     </div>
 

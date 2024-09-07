@@ -1,32 +1,43 @@
-/*
-    NOTE:
+// Initialize the verification code variable
+let verificationCode = '';
 
-    - replace current mechanism with recaptcha/captchav3 api
-    
-*/
+// Function to fetch the CAPTCHA from the API and display it
+function fetchCaptcha() {
+    fetch('https://krishsharma0413.pythonanywhere.com/api/image-captcha')
+        .then(response => response.json()) // Parse the JSON from the API
+        .then(data => {
+            // Log the JSON data to the console
+            console.log("CAPTCHA JSON Response:", data);
 
-// Captcha configuration
-const captchaText = "eTnr9hn"; // Static captcha text for demonstration
-const captchaCanvas = document.getElementById('captcha-canvas');
-const ctx = captchaCanvas.getContext('2d');
+            // Store the verification code for later use
+            verificationCode = data.verify;
 
-captchaCanvas.width = 100;
-captchaCanvas.height = 40;
+            // Get the CAPTCHA image URL and set it as the src of the img tag
+            const captchaImageUrl = `https://krishsharma0413.pythonanywhere.com${data.image}`;
+            
+            // Set the src of the <img> element to the CAPTCHA image
+            const captchaImage = document.getElementById('captcha-img');
+            captchaImage.src = captchaImageUrl;
+        })
+        .catch(error => {
+            console.error('Error fetching CAPTCHA:', error);
+        });
+}
 
-// Draw captcha text on canvas
-ctx.font = "30px Arial";
-ctx.fillStyle = "#000000";
-ctx.fillText(captchaText, 10, 30);
+// Function to validate the user's CAPTCHA input
+function validateCaptcha(event) {
+    event.preventDefault();  // Prevent form from submitting
+    const userCaptchaInput = document.getElementById('captcha').value;
 
-// Validate Captcha
-function validateCaptcha() {
-    const userInput = document.getElementById('captcha-input').value;
-    if (userInput === captchaText) {
-        alert("SUCCESS: Captcha verified successfully!");
-        // Proceed with form submission or any other logic
+    // Compare the user input with the verification code
+    if (userCaptchaInput === verificationCode) {
+        alert('SUCCESS: CAPTCHA matched!');
+        // Optionally submit the form if CAPTCHA matches
+        document.getElementById('aadhaar-form').submit();
     } else {
-        alert("FAILURE: Captcha verification failed. Please try again.");
-        // Clear the captcha input for retry
-        document.getElementById('captcha-input').value = '';
+        alert('FAILURE: CAPTCHA did not match. Try again.');
     }
 }
+
+// Fetch CAPTCHA when the page loads
+window.onload = fetchCaptcha;
