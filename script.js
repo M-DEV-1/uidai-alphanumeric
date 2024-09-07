@@ -8,14 +8,8 @@ function fetchCaptcha() {
         .then(data => {
             // Log the JSON data to the console
             console.log("CAPTCHA JSON Response:", data);
-
-            // Store the verification code for later use
             verificationCode = data.verify;
-
-            // Get the CAPTCHA image URL and set it as the src of the img tag
             const captchaImageUrl = `https://krishsharma0413.pythonanywhere.com${data.image}`;
-            
-            // Set the src of the <img> element to the CAPTCHA image
             const captchaImage = document.getElementById('captcha-img');
             captchaImage.src = captchaImageUrl;
         })
